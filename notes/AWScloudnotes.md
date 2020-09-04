@@ -1,8 +1,9 @@
- # AWS Cloud practitioner exam # 
+  # AWS Cloud practitioner exam # 
 
  ## Table of contents ##
  1. What is Cloud Computing 
  2. IAM - Identity and Access Management
+ 3. EC2 - Cloud Compute
 
 
  ## What is Cloud Computing ##
@@ -151,4 +152,196 @@
     * Access advisor shows the service permissions granted to a user and when those services were last accessed
     * You can use this information to revise your poliies
 
+ ## EC2 - Elastic Compute Cloud ##
+
+ ### Amazon EC2 ###
  
+ * EC2 is one of the most popular of AWS’ offering 
+ * EC2 = Elastic Compute Cloud = Infrastructure as a Service
+ * It mainly consists in the capability of :
+	* Renting virtual machines (EC2)
+	* Storing data on virtual drives (EBS)
+	* Distributing load across machines (ELB)
+	* Scaling the services using an auto-scaling group (ASG)
+ * Knowing EC2 is fundamental to understand how the Cloud works
+
+ ### EC2 sizing & configuration options ###
+ 
+ * OS - Linux or Windows
+ * How much compute power & cores (CPU)
+ * How much random-acess memory (RAM)
+ * How much storage space 
+     * Network attacched (EBS & EFS)
+     * hardware (EC2 Instance Store)
+ * Network card: speed of the card , Piblic IP address
+ * Firewall rules : security group
+ * Bootstrap script (configure at first launch): EC2 User data
+ * EC2 Example 
+   
+     ![Linux Directories](/notes/img/ec2eg.png?raw=true "Title")
+
+ ### Introduction to Security Groups ###
+
+ * Security groups only cotain allow rules 
+ * Security groups are the fudamental of network sercurity in AWS
+ * They control how traffic os allowed into or out of our instances
+ * Security groups rules can reference by IP or by security group 
+ * Security groups are acting as "firewall" on EC2 instance 
+ * regulate : 
+    * Access to ports
+    * Authorised IP ranges - IPv4 and IPv6
+    * Control of inbound network (from other to the instance)
+    * Control of outbound network (from the instance to other)
+ * Class Ports to Know 
+   * 22 = SSH (Secure Shell) - log into a Linux instance
+   * 21 = FTP (File Transport Protocol) – upload files into a file share
+   * 22 = SFTP (Secure File Transport Protocol) – upload files using SSH
+   * 80 = HTTP – access unsecured websites
+   * 443 = HTTPS – access secured websites
+   * 3389 = RDP (Remote Desktop Protocol) – log into a Windows instance
+ 
+ ### EC2 Instances Purchasing Options ###
+
+ * On-Demand Instances:short workload, Predictable pricing
+ * Reserved: (Minimum 1 year)
+     * Reserved Instances: long workloads
+     * Convertible Reserved Instance: long Workloads with flexible instances
+     * Scheduled Reserved Instances: exacmple- every thursday b/w 3 and 6
+ * Spot instances: short workloads,cheap, can lose instances (less reliable) 
+ * Dedicated Hostts: book an entire physical server, control instance placement
+ 
+ #### Ec2 On Demand ####
+ 
+ * Pay for what you use:
+     * Linux - billing per second, after the first minute
+     * All other operating systems (ex: Windows) - billing per hour
+ * Has the highest cost but no upfront payment
+ * No long-term commitment
+ * Recommended for short-term and un-interrupted workloads, where you can't predict how the application will behave
+ 
+ #### EC2 Reserved Instances ####
+ 
+ * Up to 72% discount compared to On-demand
+ * Reservation period: 1 year = + discount | 3 years = +++ discount
+ * Purchasing options: no upfront | partial upfront = + | All upfront = ++ discount
+ * Reserve a specific instance type
+ * Recommended for steady-state usage applications (think database)
+ * Convertible Reserved Instance
+    * can change the EC2 instance type
+    * Up to 45% discount
+ * Scheduled Reserved Instances
+    * launch within time window you reserve
+    * When you require a fraction of day / week / month
+    * Commitment for 1 year only
+
+ #### EC2 Spot Instances ####
+
+ * Can get a discount of up to 90% compared to On-demand
+ * Instances that you can “lose” at any point of time if your max price is less than the current spot price
+ * The MOST cost-efficient instances in AWS
+ * Useful for workloads that are resilient to failure
+    * Batch jobs
+    * Data analysis
+    * Image processing
+    * Any distributed workloads
+    * Workloads with a flexible start and end time
+ * Not suitable for critical jobs or database
+ 
+ #### EC2 Dedicated Hosts #### 
+
+ * An Amazon EC2 Dedicated Host is a physical server with EC2 instance capacity fully dedicated to your use. Dedicated Hosts can help you address compliance requirements and reduce costs by allowing you to use your existing server-bound software licenses.
+ * Allocated for your account for a 3-year period reservation
+ * More expensive
+ * Useful for software that have complicated licensing model (BYOL – Bring Your Own License)
+ * Or for companies that have strong regulatory or compliance need
+
+ #### EC2 Dedicated Hosts #### 
+
+ * Instances running on hardware that’s dedicated to you
+ * May share hardware with other instances in same account
+ * No control over instance placement (can move hardware after Stop / Start)
+ * Pricing Example
+  
+   ![Linux Directories](/notes/img/pricingeg.png?raw=true "Title")
+ 
+ #### Shared Responsibility Model for EC2 ####
+ 
+ ![Linux Directories](/notes/img/sharedec2.png?raw=true "Title")
+
+
+ ## EC2 Instance Storages ##
+ 
+ ### EBS Overview ###
+ 
+ * An EBS(Elastic Block store) Volume is a network drive you can attach to youur instances while they run
+ * It allows your instances to persist data, even after their termination. ie ie even after the instance is terminated. We can recreate an instance, and mount the same EBS volume from before,and we will get back our data.
+ * They can only be mounted to one instance at a time (at the CCp level)
+ * They are bound to a specfic availability zone
+ * Analogy: Think of them as a  "network USB stick"
+ * Free tier: 30 GB of free EBS storage of type gp2 per month
+
+ ### 1. EBS Volume ###
+ 
+ * It’s a network drive (i.e. not a physical drive)
+    * It uses the network to communicate the instance, which means there might be a bit of
+      latency
+    * It can be detached from an EC2 instance and attached to another one quickly
+ * It’s locked to an Availability Zone (AZ)
+     * An EBS Volume in us-east-1a cannot be attached to us-east-1b
+     * To move a volume across, you first need to snapshot it
+ * Have a provisioned capacity (size in GBs, and IOPS)
+     * You get billed for all the provisioned capacity
+     * You can increase the capacity of the drive over time
+ 
+ ### EBS Snapshots ###
+ 
+ * Make a backup  (snapshot) of your EBS Volume at a point in time
+ * Not necessary to detach volume to do snapshot, but recommended
+ * Can cop snapshot across Avaliablity zone or Region
+ * how snap shot works 
+
+   ![Linux Directories](/notes/img/snapshot.png?raw=true "Title")
+
+ * Is possible to copy sanpshot 
+ * We can create a new snapshot 
+
+ ### AMI (Amazon Machine Image) ###
+
+ * AMI are customization of an EC2 instance
+    * You add your own software, configuration, OS, monitoring
+    * Faster boot / configuration time because all your software is pre-packaged
+ * AMI are built for a specfic region (and can be copied accross regions)
+ * You can launch EC2 instances from 
+    * A public AMI:  AWS provided
+    * Your own AMI: you make and maintain yourself
+    * An AAWS marketplace AMI: an AMI someone else made (and potentially sells)
+
+ ### AMI Process (From an EC2 instance) ###
+
+ * Start an EC2 instance and customize it
+ * Stop the instance (for data integirty)
+ * Build an AMI - this will also creates EBS snapshots
+ * Launch instances from other AMIs
+
+ ### 2. EC2 Instance Store ###
+ 
+ * EBS volumes are network drives with good but “limited” performance
+ * If you need a high-performance hardware disk, use EC2 Instance Store
+ * Better I/O performance
+ * EC2 Instance Store lose their storage if they’re stopped (ephemeral)
+ * Good for buffer / cache / scratch data / temporary content
+ * Risk of data loss if hardware fails
+ * Backups and Replication are your responsibility.
+
+ ### 3. EFS – Elastic File System ###
+ 
+ * Managed NFS (network file system) that can be mounted on 100s of EC2
+ * EFS works with Linux EC2 instances in multi-AZ
+ * Highly available, scalable, expensive (3x gp2), pay per use, no capacity planning
+
+ #### Shared responsibility  Model for EC2 Storage ####
+
+ ![Linux Directories](/notes/img/sharedec2storage.png?raw=true "Title")
+
+ 
+  
