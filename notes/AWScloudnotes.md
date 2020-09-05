@@ -344,4 +344,35 @@
  ![Linux Directories](/notes/img/sharedec2storage.png?raw=true "Title")
 
  
+
+### Amazon S3 ###
+Amazon S3 is one of the main building blocks of AWS
+It’s advertised as ”infinitely scaling” storage.
+S3 Use cases
+Backup and storage
+Disaster Recovery
+Archive
+Hybrid Cloud storage
+Application hosting
+Media hosting
+Data lakes & big data analytics
+Software delivery
+Static website
+Amazon S3 Overview - Buckets
+Amazon S3 allows people to store objects (files) in “buckets” (directories)
+Buckets must have a globally unique name (across all regions all accounts)
+Objects (files) have a Key
+The key is the FULL path:
+s3://my-bucket/my_file.txt
+s3://my-bucket/my_folder1/another_folder/my_file.txt
+S3 Bucket Policies
+JSON based policies
+Resources: buckets and objects
+Actions: Set of API to Allow or Deny
+Effect: Allow / Deny
+Principal: The account or user to apply the policy to
+Use S3 bucket for policy to:
+Grant public access to the bucket
+Force objects to be encrypted at upload
+Grant access to another account (Cross Account)
   
