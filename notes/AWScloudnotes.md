@@ -709,3 +709,339 @@
  * Serverless was pioneered by AWS Lambda but now also includes anything that’s managed: “databases, messaging, storage, etc.”
  * Serverless does not mean there are no servers… it means you just don’t manage / provision / see them
 
+ ## Lambda vs EC2 ## 
+ 
+ * EC2 
+    * Virtual Servers in the Cloud
+    * Limited by RAM and CPU
+    * Continuously running
+    * Scaling means intervention to add / remove servers
+ * Amazon Lambda
+    * Virtual functions – no servers to manage!
+    * Limited by time - short executions
+    * Run on-demand
+    * Scaling is automated!
+
+ ## AWS Lambda ##
+ 
+ * Easy Pricing:
+ * Pay per request and compute time
+ * Free tier of 1,000,000 AWS Lambda requests and 400,000 GBs of compute time
+ * Integrated with the whole AWS suite of services
+ * Event-Driven: functions get invoked by AWS when needed
+ * Integrated with many programming languages
+ * Easy monitoring through AWS CloudWatch
+ * Easy to get more resources per functions (up to 3GB of RAM!)
+ * Increasing RAM will also improve CPU and network! 
+
+ * AWS Lambda language support 
+     * Node.js (JavaScript) 
+     * Python 
+     * Java (Java 8 compatible) 
+     * C# (.NET Core) 
+     * Golang 
+     * C# / Powershell 
+     * Ruby 
+     * Custom Runtime API (community supported, example Rust) 
+     * Important: Docker is not for AWS Lambda, it’s for ECS / Fargate 
+
+
+ ### AWS Lambda Pricing: example ###
+ * You can find overall pricing information here: https://aws.amazon.com/lambda/pricing/
+ * Pay per calls:
+    * First 1,000,000 requests are free 
+    * $0.20 per 1 million requests thereafter ($0.0000002 per request)
+ * Pay per duration: (in increment of 100ms) 
+    * 400,000 GB-seconds of compute time per month if FREE 
+    * == 400,000 seconds if function is 1GB RAM 
+    * == 3,200,000 seconds if function is 128 MB RAM 
+    * After that $1.00 for 600,000 GB-seconds 
+ * It is usually very cheap to run AWS Lambda so it’s very popular.
+
+ ### AWS Batch ###
+ * Fully managed batch processing at any scale
+ * Efficiently run 100,000s of computing batch jobs on AWS
+ * A “batch” job is a job with a start and an end (opposed to continuous)
+ * Batch will dynamically launch EC2 instances or Spot Instances
+ * AWS Batch provisions the right amount of compute / memory
+ * You submit or schedule batch jobs and AWS Batch does the rest!
+ * Batch jobs are defined as Docker images and run on ECS
+ * Helpful for cost optimizations and focusing less on the infrastructure
+
+ ### Batch vs Lambda ###
+
+ • Lambda: 
+   • Time limit 
+   • Limited runtimes 
+   • Limited temporary disk space 
+   • Serverless 
+ • Batch: 
+   • No time limit 
+   • Any runtime as long as it’s packaged as a Docker image 
+   • Rely on EBS / instance store for disk space 
+   • Relies on EC2 (can be managed by AWS)
+
+ ### Amazon Lightsail ###
+
+ * Virtual servers, storage, databases, and networking
+ * Low & predictable pricing
+ * Simpler alternative to using EC2, RDS, ELB, EBS, Route 53…
+ * Great for people with little cloud experience!
+ * Can setup notifications and monitoring of your Lightsail resources
+ * Use cases:
+    * Simple web applications (has templates for LAMP, Nginx, MEAN, Node.js…)
+    * Websites (templates for WordPress, Magento, Plesk, Joomla)
+    * Dev / Test environment
+ * Has high availability but no auto-scaling, limited AWS integrations
+
+
+ ### Other Compute - Summary ###
+
+ * Docker: container technology to run applications
+ * ECS: run Docker containers on EC2 instances
+ * Fargate:
+    * Run Docker containers without provisioning the infrastructure
+    * Serverless offering (no EC2 instances)
+ * ECR: Private Docker Images Repository
+ * Batch: run batch jobs on AWS across managed EC2 instances
+ * Lightsail: predictable & low pricing for simple application & DB stacks
+
+ ## Deploying and Managing Infrastructure at Scale Section ##
+
+ ## What is CloudFormation ##
+
+ * CloudFormation is a declarative way of outlining your AWS Infrastructure, for any resources (most of them are supported).
+ * For example, within a CloudFormation template, you say:
+   * I want a security group
+   * I want two EC2 instances using this security group
+   * I want an S3 bucket
+   * I want a load balancer (ELB) in front of these machines
+ * Then CloudFormation creates those for you, in the right order, with the exact configuration that you specify
+
+ ### Benefits of AWS CloudFormation ###
+ * Infrastructure as code
+    * No resources are manually created, which is excellent for control
+    * Changes to the infrastructure are reviewed through code
+ * Cost
+   * Each resources within the stack is tagged with an identifier so you can easily see how much a stack costs you
+   * You can estimate the costs of your resources using the CloudFormation template
+   * Savings strategy: In Dev, you could automation deletion of templates at 5 PM and recreated at 8 AM, safely
+ * Productivity
+   * Ability to destroy and re-create an infrastructure on the cloud on the fly
+   * Automated generation of Diagram for your templates!
+   * Declarative programming (no need to figure out ordering and orchestration)
+ * Don’t re-invent the wheel
+   * Leverage existing templates on the web!
+   * Leverage the documentation
+ * Supports (almost) all AWS resources:
+   * Everything we’ll see in this course is supported
+   * You can use “custom resources” for resources that are not supported
+
+ ### Developer problems on AWS ###
+ * Managing infrastructure
+ * Deploying Code
+ * Configuring all the databases, load balancers, etc
+ * Scaling concerns
+ * Most web apps have the same architecture (ALB + ASG)
+ * All the developers want is for their code to run!
+ * Possibly, consistently across different applications and environments
+
+ ### AWS Elastic Beanstalk Overview ###
+ * Elastic Beanstalk is a developer centric view of deploying an application on AWS
+ * It uses all the component’s we’ve seen before: EC2, ASG, ELB, RDS, etc…
+ * But it’s all in one view that’s easy to make sense of! 
+ * We still have full control over the configuration 
+ * Beanstalk = Platform as a Service (PaaS) 
+ * Beanstalk is free but you pay for the underlying instances
+
+ ### Elastic Beanstalk ###
+ * Managed service
+   * Instance configuration / OS is handled by Beanstalk
+   * Deployment strategy is configurable but performed by Elastic Beanstalk
+ * Just the application code is the responsibility of the developer
+ * Three architecture models:
+   * Single Instance deployment: good for dev
+   * LB + ASG: great for production or pre-production web applications
+   * ASG only: great for non-web apps in production (workers, etc..)
+
+ ### Elastic Beanstalk ###
+
+ * Support for many platforms:
+   * Go
+   * Java SE
+   * Java with Tomcat
+   * .NET on Windows Server with IIS
+   * Node.js
+   * PHP
+   * Python
+   * Ruby
+   * Packer Builder
+
+ ### AWS CodeDeploy ###
+
+ * We want to deploy our application automatically
+ * Works with EC2 Instances
+ * Works with On-Premises Servers
+ * Hybrid service
+ * Servers / Instances must be provisioned and configured ahead of time with the CodeDeploy Agent
+
+ ### AWS Systems Manager (SSM) ###
+ * Helps you manage your EC2 and On-Premises systems at scale
+ * Another Hybrid AWS service
+ * Get operational insights about the state of your infrastructure
+ * Suite of 10+ products
+ * Most important features are:
+    * Patching automation for enhanced compliance
+    * Run commands across an entire fleet of servers
+    * Store parameter configuration with the SSM Parameter Store
+ * Works for both Windows and Linux OS
+
+ ### How Systems Manager works ###
+
+ * We need to install the SSM agent onto the systems we control
+ * Installed by default on Amazon Linux AMI & some Ubuntu AMI
+ * If an instance can’t be controlled with SSM, it’s probably an issue with the SSM agent!
+ * Thanks to the SSM agent, we can run commands, patch & configure our servers
+
+ ### AWS OpsWorks ### 
+
+ * Chef & Puppet help you perform server configuration automatically, or repetitive actions
+ * They work great with EC2 & On-Premises VM
+ * AWS OpsWorks = Managed Chef & Puppet
+ * It’s an alternative to AWS SSM
+ * Only provision standard AWS resources:
+    * EC2 Instances, Databases, Load Balancers, EBS volumes…
+ * In the exam: Chef or Puppet needed => AWS OpsWorks
+
+ ![Linux Directories](/notes/img/ops.png?raw=true "Title")
+
+ ## Global Infrastructure Section ##
+
+ ### Why make a global application? ###
+
+ * A global application is an application deployed in multiple geographies
+ * On AWS: this could be Regions and / or Edge Locations
+ * Decreased Latency
+   * Latency is the time it takes for a network packet to reach a server
+   * It takes time for a packet from Asia to reach the US
+   * Deploy your applications closer to your users to decrease latency, better experience
+ * Disaster Recovery (DR)
+   * If an AWS region goes down (earthquake, storms, power shutdown, politics)…
+   * You can fail-over to another region and have your application still working
+   * A DR plan is important to increase the availability of your application
+ * Attack protection: distributed global infrastructure is harder to attack 
+
+
+ ### Global Applications in AWS ###
+ * Global DNS: Route 53
+   * Great to route users to the closest deployment with least latency
+   * Great for disaster recovery strategies
+ * Global Content Delivery Network (CDN): CloudFront
+   * Replicate part of your application to AWS Edge Locations – decrease latency
+   * Cache common requests – improved user experience and decreased latency
+ * S3 Transfer Acceleration
+   * Accelerate global uploads & downloads into Amazon S3
+ * AWS Global Accelerator:
+   * Improve global application availability and performance using the AWS global network
+
+
+ ### Amazon Route 53 Overview ###
+
+ * Route53 is a Managed DNS (Domain Name System)
+ * DNS is a collection of rules and records which helps clients understand how to reach a server through URLs.
+ * In AWS, the most common records are:
+   * www.google.com => 12.34.56.78 == A record (IPv4)
+   * www.google.com => 2001:0db8:85a3:0000:0000:8a2e:0370:7334 == AAAA IPv6
+   * search.google.com => www.google.com == CNAME: hostname to hostname
+   * example.com => AWS resource == Alias (ex: ELB, CloudFront, S3, RDS, etc…)
+
+ ### AWS CloudFront ###
+ * Content Delivery Network (CDN)
+ * Improves read performance, content is cached at the edge
+ * Improves users experience
+ * 216 Point of Presence globally (edge locations)
+ * DDoS protection (because worldwide), integration with Shield, AWS Web Application Firewall
+
+ ### CloudFront – Origins ###
+
+ * S3 bucket 
+     * For distributing files and caching them at the edge 
+     * Enhanced security with CloudFront Origin Access Identity (OAI) 
+     * CloudFront can be used as an ingress (to upload files to S3) 
+ * Custom Origin (HTTP) 
+     * Application Load Balancer 
+     * EC2 instance 
+     * S3 website (must first enable the bucket as a static S3 website) 
+     * Any HTTP backend you want
+
+ ### CloudFront vs S3 Cross Region Replication ###
+
+ * CloudFront:
+    * Global Edge network
+    * Files are cached for a TTL (maybe a day)
+    * Great for static content that must be available everywhere
+ * S3 Cross Region Replication:
+    * Must be setup for each region you want replication to happen
+    * Files are updated in near real-time
+    * Read only
+    * Great for dynamic content that needs to be available at low-latency in few regions
+
+ ### S3 Transfer Acceleration ###
+
+ * Increase transfer speed by transferring file to an AWS edge location which will forward the data to the S3 bucket in the target region S3 Bucket
+ * Test the tool at: https://s3-accelerate-speedtest.s3-accelerate.amazonaws.com/en/accelerate-speed-comparsion.html
+
+ ### AWS Global Accelerator ###
+ * Improve global application availability and performance using the AWS global network
+ * Leverage the AWS internal network to optimize the route to your application (60% improvement)
+ * 2 Anycast IP are created for your application and traffic is sent through Edge Locations
+ * The Edge locations send the traffic to your application
+
+ ### AWS Global Accelerator vs CloudFront ###
+
+ * They both use the AWS global network and its edge locations around the world
+ * Both services integrate with AWS Shield for DDoS protection.
+ * CloudFront – Content Delivery Network
+    * Improves performance for your cacheable content (such as images and videos)
+    * Content is served at the edge
+ * Global Accelerator
+    * No caching, proxying packets at the edge to applications running in one or more AWS Regions.
+    * Improves performance for a wide range of applications over TCP or UDP
+    * Good for HTTP use cases that require static IP addresses
+    * Good for HTTP use cases that required deterministic, fast regional failover
+
+
+ ## Cloud Integration Section ##
+
+ * When we start deploying multiple applications, they will inevitably need to communicate with one another
+ * There are two patterns of application communication
+ * Synchronous between applications can be problematic if there are sudden spikes of traffic
+ * What if you need to suddenly encode 1000 videos but usually it’s 10?
+ * In that case, it’s better to decouple your applications:
+   * using SQS: queue model
+   * using SNS: pub/sub model
+   * using Kinesis: real-time data streaming model (out of scope for the exam)
+ * These services can scale independently from our application!
+
+ ### Amazon SQS – Standard Queue ###
+
+ * Oldest AWS offering (over 10 years old)
+ * Fully managed service (~serverless), use to decouple applications
+ * Scales from 1 message per second to 10,000s per second
+ * Default retention of messages: 4 days, maximum of 14 days
+ * No limit to how many messages can be in the queue
+ * Messages are deleted after they’re read by consumers
+ * Low latency (<10 ms on publish and receive)
+ * Consumers share the work to read messages & scale horizontally
+
+ ### Amazon SNS ###
+
+ * The “event publishers” only sends message to one SNS topic
+ * As many “event subscribers” as we want to listen to the SNS topic notifications
+ * Each subscriber to the topic will get all the messages
+ * Up to 10,000,000 subscriptions per topic, 100,000 topics limit
+ * SNS Subscribers can be:
+    * HTTP / HTTPS (with delivery retries – how many times)
+    * Emails, SMS messages, Mobile Notifications
+    * SQS queues (fan-out pattern), Lambda Functions (write-your-own integration)
+
