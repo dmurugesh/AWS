@@ -32,6 +32,31 @@
    systemctl enable httpd  -- Used to enable apched automatic once you on your system
  ```
  
+  ## Command used to configure firewall service ##
+
+ ```
+ 1. firewall -cmd --permanent --add-service=http 
+ 2. firewall -cmd --permanent --add-service=https  => provide access to port 80 or port 443  
+ 3. firewall -cmd --reload
+
+ ```
+ * other commands of apache 
+ ```
+  whereis httpd   --- find all the files location related to httpd
+  httpd -l        --- Gives the list of modules in httpd 
+  httpd -M        --- Gives the list of all modules associated with httpd 
+  httpd -t -f /etc/httpd/conf/httpd.conf  --- to make modifications on the apache configuration 
+ 
+ ```
+ 
+ ## directories ##
+ ```
+ /etc/httpd         --- has the custom config file
+ /var/log/httpd     --- contains the log files 
+ /usr/lib64/httpd  --- modules of appache 
+
+ ```
+ 
  
  The Apache HTTP Server Project uses Subversion for hosting its source code.
 
