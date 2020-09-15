@@ -103,3 +103,16 @@
       * seeother  -- Tells the user that required resoures is replaced by another one, status code 393
       * gone      -- Tells the user that the resources they are looking for move to permanently, status code 410
 
+ ## Node Js ##
+
+ * An Open source , runtime enviroment for excuting Javascript Code outside browser
+ * Use for backend service
+ * Ideal for building Highly-scable, data-intensive and real time aps
+ * Advantages
+     * Great for protopying and agile development 
+     * Superfast and highly scalable 
+     * Javascript Everywhere
+     * Cleaner and more consistent codebase 
+     * Large ecosystem of open-source libs
+ * 
+ 
