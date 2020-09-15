@@ -116,3 +116,24 @@
      * Large ecosystem of open-source libs
  * 
  
+  ## Apache Logging Facilities ##
+
+ * Apache can produce many types of logs. The two essential types are the access log, where all requests are noted, and the error log, which is designed to log various informational and debug messages, plus every exceptional event that occurs. Additional information can be found in module-specific logs, as is the case with mod_ssl, mod_rewrite and mod_security. The access log is created and written to by the module mod_log_config, which is not a part of the core, but this module is so important that everyone treats it as if it is.
+ #### Request Logging ####
+ * You only need to be familiar with three configuration directives to manage request logging:
+     * LogFormat
+     * transferLog
+     * CustomLog
+ * In fact, you will need to use only two. The CustomLog directive is so flexible and easy to use that you will rarely need to use transferLog in your configuration. (It will become clear why later.)
+ * Other directives are available, but they are deprecated and should not be used because CustomLog can achieve all the necessary functionality. Some have been removed from Apache 2:
+
+ #### LogFormat ####
+ * Before covering the process of logging to files, consider the format of our log files. One of the benefits of Apache is its flexibility when it comes to log formatting. All this is owed to the LogFormat directive, whose default is the following, referred to as the Common Log Format (CLF):
+ * LogFormat "%h %l %u %t \"%r\" %>s %b" common
+ * The first parameter is a format string indicating the information to be included in a log file and the format in which it should be written; the second parameter gives the format string a name. You can decipher the log format using the symbol table. The table is available from the Apache reference documentation (http://httpd.apache.org/docs-2.0/mod/mod_log_config.html). It is reproduced in Table 8-1.
+
+ #### CustomLog ####
+ * The real power comes from using the CustomLog directive. The equivalent to the transferLog usage described above looks like this:
+ * CustomLog /var/www/logs/access_log custom
+ * The explicit naming of the log format helps us avoid mistakes. I like this directive because of its conditional logging features. Have a look at the following configuration fragment:
+
