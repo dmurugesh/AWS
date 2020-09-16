@@ -137,3 +137,84 @@
  * CustomLog /var/www/logs/access_log custom
  * The explicit naming of the log format helps us avoid mistakes. I like this directive because of its conditional logging features. Have a look at the following configuration fragment:
 
+
+ # AWS Cloud practitioner exam # 
+
+ ## Table of contents ##
+ 1. What is Cloud Computing 
+ 2. IAM - Identity and Access Management
+ 3. EC2 - Cloud Compute
+
+
+ ## What is Cloud Computing ##
+ 
+ * What is server composed of - 
+    * CPU(Compute)  
+    * RAM(Memory)
+    * Storage(data) 
+    * Database(Store data in a structured way) 
+    * Network(Routers,switch, DNS server)
+ * IT Terminology
+    * Network - Cables,routers and serers connected with each other 
+    * Router - A networking device that forqards data packets b/w computer networks. They know where to send your packets on the internet
+    * Switch - Takes a  packet and send it to the correct server/cilent on your network
+ ```
+ Work Flow 
+ 
+ Cilent  --> Router --> Switch --> various cilents 
+ ```
+ * **Cloud** **Computing** is the on-demand delivery of computer power, database storage applications and other IT resources
+ * Though a cloud services platform with pay-asyou-go pricing.
+ * Simple way to access servers, storage databases and set of application services
+ * Three types of cloud 
+   1. Private cloud 
+      * Cloud service used by a single organization, not exposed to public. 
+      * Security for senstive applications, Meet specific bussiness needs
+      * eg: rockspace
+   2. Public cloud 
+      * Cloud resources owned and operated by thrid party cloud service provider delivered over the internet 
+      * eg: Google cloud, AWS, Microsoft Azure
+   3. Hybrid cloud
+      * Keep some servers on premises and extend some capabilities to the cloud 
+      * Control over senstive assests in your private infrastructure
+ * Five characteristics of cloud computing 
+    1. On-demand self service             - use without human interaction from the service provider
+    2. Broad network access 		  - can be accesed by diverse cilent platform
+    3. Multi-tenacy and resouce pooling   - multiple customer can share the same infrastructure and applications with security and privacy
+    4. Rapid elasticity and scalabilty    - quickly and easily saclebased on demad
+    5. Measured service  		  - usage is measured pay only for your usage 
+
+ #### Types of cloud Computing ####
+  1. Infrastructure as a service (IaaS)
+      * Provide building block for cloud IT
+      * Provides networking, computers, data storage space
+      * Highest level of flexibilty 
+      * Easy parallel with traditional on-premises IT
+      * eg : Amazon EC2 (on AWS), GCP,Azure, Rackspace, Digital Ocean, Lincode
+  2. Platform as a Service (PaaS)
+      * Removes the need for your organization to manage the underlying infrastructure 
+      * Focus on the deployment and management of your application.
+      * eg: Elastic Beanstalk (on AWS), Heroku, Google App engine(GCp), Windows Azure 
+  3. Software as a Servie (SaaS)
+      * Completed product that is run and managed by the service proider 
+      * eg: Many AWS service (ex: Rekognition for machine learning), Google Apps (gmail), Dropbox, Zoom
+
+ ## IAM (Identity and Access Management) ##
+
+ * Root account created by default, should not be used or shared
+ * Users are prople within organisation, and can be grouped
+ * Groups only contain users, not groups
+ * Users dont have to belong to a group and user can belong to multiple groups
+
+ #### IAM: Permissions ####
+ * Users or group can be assigned JSON documents called policies
+   eg : for policies 
+
+   ![Linux Directories](/notes/img/iampolicies.png?raw=true "Title")
+
+ * Policies define the permission of the user.
+ * In AWS you apply the least privvilege principle: dont give more permissions than a user needs
+    eg: If user need 3 permisisions just give access to 3 permissions only 
+ * Tags are way for you to mark the users and add some attributes
+ * Check the video 2 gor how to create user and groups 
+
