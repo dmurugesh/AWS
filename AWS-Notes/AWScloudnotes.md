@@ -1163,3 +1163,17 @@
  * X-Ray: trace requests made through your distributed applications
  * Service Health Dashboard: status of all AWS services across all regions
  * Personal Health Dashboard: AWS events that impact your infrastructure
+ 
+ ## IAM (Identity and Access Management) ##
+
+ * Root account created by default, should not be used or shared
+ * Users are prople within organisation, and can be grouped
+ * Groups only contain users, not groups
+ * Users dont have to belong to a group and user can belong to multiple groups
+
+ #### IAM: Permissions ####
+ * Users or group can be assigned JSON documents called policies
+   eg : for policies 
+
+   ![Linux Directories](/notes/img/iampolicies.png?raw=true "Title")
+
